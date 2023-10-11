@@ -1,6 +1,5 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
-from PIL import Image
 from shortuuid.django_fields import ShortUUIDField
 from django.db.models.signals import post_save
 from django.utils.text import slugify
