@@ -147,6 +147,10 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 AUTH_USER_MODEL = "userauths.User"
 
+LOGIN_REDIRECT_URL = 'core:feed'
+LOGOUT_URL = 'userauths:sign-up'
+LOGIN_URL = 'userauths:sign-up'
+
 JAZZMIN_SETTINGS = {
     'site_header': "Facebook Clone",
     'site_brand': "Connecting people together...",
