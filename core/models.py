@@ -63,6 +63,9 @@ class Post(models.Model):
         return format_html('<img src="/media/{}" style="width: 50px; height: 50px; border-radius: 5px; object-fit: cover" />'.format(self.image))
         # return mark_safe('<img src="/media/%s" width="50" height="50" object-fit:"cover" style="border-radius: 5px;" />' % (self.image))
 
+    def post_comments(self):
+        comments = Comment.objects.filter(post=self, active=True).order_by("-id")
+        return comments
 
 class Gallery(models.Model):
     post = models.ForeignKey(Post, on_delete=models.SET_NULL, null=True)
