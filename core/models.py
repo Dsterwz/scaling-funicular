@@ -137,6 +137,9 @@ class Comment(models.Model):
         ordering = ["-date"]
         verbose_name_plural = "Comment"
 
+    def comment_replies(self):
+        comment_replies = ReplyComment.objects.filter(comment=self, active=True)
+        return comment_replies
 
 class ReplyComment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="reply_user")

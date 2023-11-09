@@ -34,7 +34,7 @@ class CommentAdmin(admin.ModelAdmin):
 
 class ReplyCommentAdmin(admin.ModelAdmin):
     list_editable = ["active"]
-    list_display = ["user", "comment", "active"]
+    list_display = ["user", "comment", "reply", "active"]
 
 
 class NotificationAdmin(admin.ModelAdmin):

@@ -13,5 +13,7 @@ urlpatterns = [
     path("like-post/", views.like_post, name="like-post"),
     path("comment-post/", views.comment_on_post, name="comment-post"),
     path("like-comment/", views.like_comment, name="like-comment"),
+    path("reply-comment/", views.reply_comment, name="reply-comment"),
+    path("delete-comment/", views.delete_comment, name="delete-comment"),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

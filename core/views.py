@@ -1,12 +1,13 @@
 from django.shortcuts import render, redirect
-from core.models import Post, Comment
 from django.utils.text import slugify
 from django.http import JsonResponse
 from django.utils.timesince import timesince
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
-import shortuuid
 
+from core.models import Post, Comment, ReplyComment
+
+import shortuuid
 
 @login_required
 def index(request):
@@ -119,3 +120,38 @@ def like_comment(request):
     }
 
     return JsonResponse({"data": data})
+
+
+def reply_comment(request):
+    id = request.GET['id']
+    reply = request.GET['reply']
+
+    comment = Comment.objects.get(id=id)
+    user = request.user
+
+    new_reply = ReplyComment.objects.create(
+        comment=comment,
+        user=user,
+        reply=reply,
+    )
+
+    data = {
+        "is_commented":True,
+        "reply": new_reply.reply,
+        "profile_image":new_reply.user.profile.image.url,
+        "date":timesince(new_reply.date),
+        "reply_id":new_reply.id,
+        "post_id":new_reply.comment.post.id,
+    }
+
+    return JsonResponse({"data":data})
+
+def delete_comment(request):
+    id = request.GET["id"]
+    comment = Comment.objects.get(id=id)
+    comment.delete()
+
+    data = {
+        "deleted": True
+    }
+    return JsonResponse({"data":data})
