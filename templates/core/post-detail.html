@@ -12,6 +12,18 @@
         content: "";
         /* Hide the pseudo-element */
     }
+
+    ::-webkit-scrollbar {
+        width: 1px;
+    }
+
+    ::-webkit-scrollbar-track {
+        background-color: #ededed;
+    }
+
+    ::-webkit-scrollbar-thumb { 
+        background-color: #b7b7b7;
+    }
 </style>
 
 <!-- Main Contents -->
@@ -121,22 +133,19 @@
                     </div>
                 </div>
 
-                <!-- Post div -->
                 <div class="post-div">
-
-                    {% for p in posts %}
 
                     <div class="card lg:mx-0 uk-animation-slide-bottom-small mt-3 mb-3">
 
                         <!-- post header-->
                         <div class="flex justify-between items-center lg:p-4 p-2.5">
                             <div class="flex flex-1 items-center space-x-4">
-                                <a href="{% url 'userauths:profile' p.user.username %}">
+                                <a href="#">
                                     <img src="{{p.user.profile.image.url}}"
                                         class="bg-gray-200 border border-white rounded-full w-10 h-10">
                                 </a>
                                 <div class="flex-1 font-semibold capitalize">
-                                    <a href="{% url 'userauths:profile' p.user.username %}" class="text-black dark:text-gray-100"> {{p.user.profile.full_name}} </a>
+                                    <a href="#" class="text-black dark:text-gray-100"> {{p.user}} </a>
                                     <div class="text-gray-700 flex items-center space-x-2">
                                         <span><small>{{p.date|timesince}}</small></span>
                                         <ion-icon name="people"></ion-icon>
@@ -269,7 +278,7 @@
 
                             <div class="border-t py-4 space-y-4 dark:border-gray-600" id="comment-div{{p.id}}">
 
-                                {% for c in p.post_comments|slice:"2" %}
+                                {% for c in p.post_comments %}
                                 <div class="flex card shadow p-2" id="comment-div-{{c.id}}">
                                     <div class="w-10 h-10 rounded-full relative flex-shrink-0">
                                         <img src="{{c.user.profile.image.url}}" alt=""
@@ -315,13 +324,13 @@
                                             <span>{{c.date|timesince}} ago</span>
                                         </div>
                                         <!-- Comment replies-->
-                                        <div class="reply-div{{c.id}}">
+                                        <div class="reply-div{{c.id}}" style="overflow-y: auto; max-height: 200px;">
                                             
-                                            {% for cr in c.comment_replies|slice:"1" %}
+                                            {% for cr in c.comment_replies %}
                                                 
                                             <div class="flex mr-12 mb-2 mt-2" style="margin-right: 20px;">
                                                 <div class="w-10 h-10 rounded-full relative flex-shrink-0">
-                                                    <img src="{{request.user.profile.image.url}}" style="width: 40px; height: 40px;" alt="" class="absolute h-full rounded-full w-full">
+                                                    <img src="{{cr.user.profile.image.url}}" style="width: 40px; height: 40px;" alt="" class="absolute h-full rounded-full w-full">
                                                 </div>
                                                 <div>
                                                     <div class="text-gray-700 py-2 px-3 rounded-md bg-gray-100 relative lg:ml-5 ml-2 lg:mr-12 dark:bg-gray-800 dark:text-gray-100">
@@ -351,11 +360,6 @@
 
                             </div>
 
-                            {% if p.post_comments.count > 0 %}
-                            <a href="{% url 'core:post-detail' p.slug %}" class="hover:text-blue-600 hover:underline"> View all {{p.post_comments.count}}
-                                comments </a>
-                            {% endif %}
-
 
                             <div class="bg-gray-100 rounded-full relative dark:bg-gray-800 border-t">
                                 <input placeholder="Add your Comment.." id="comment-input{{p.id}}"
@@ -375,7 +379,6 @@
 
                     </div>
 
-                    {% endfor %}
                 </div>
 
                 <div class="flex justify-center mt-6">

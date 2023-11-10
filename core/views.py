@@ -16,6 +16,13 @@ def index(request):
     return render(request, "core/index.html", context)
 
 
+@login_required
+def post_detail(request, slug):
+    post = Post.objects.get(slug=slug, active=True, visibility="Everyone")
+    context = {"p": post}
+    return render(request, "core/post-detail.html", context)
+
+
 @csrf_exempt
 def create_post(request):
 

@@ -1,10 +1,12 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 
 from userauths.models import Profile, User
 from userauths.forms import UserRegisterForm 
+from core.models import Post
 
 def registerView(request):
     if request.user.is_authenticated:
@@ -67,3 +69,28 @@ def logoutView(request):
     logout(request)
     messages.success(request, "You are logged out!")
     return redirect("userauths:sign-up")
+
+@login_required
+def my_profile(request):
+    profile = request.user.profile
+    posts = Post.objects.filter(active=True, user=request.user).order_by("-id")
+
+    context = {
+        "profile" : profile,
+        "posts" : posts,
+    }
+
+    return render(request, "userauths/my-profile.html", context)
+
+
+@login_required
+def friend_profile(request, username):
+    profile = Profile.objects.get(user__username=username)
+    posts = Post.objects.filter(active=True, user=profile.user).order_by("-id")
+
+    context = {
+        "profile" : profile,
+        "posts" : posts,
+    }
+
+    return render(request, "userauths/friend-profile.html", context)
